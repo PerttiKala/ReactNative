@@ -70,7 +70,8 @@ const RepositoryList = () => {
       stars={item.stargazersCount}
       forks={item.forksCount}
       reviews={item.reviewCount}
-      rating={item.ratingAverage}>
+      rating={item.ratingAverage}
+      image={item.ownerAvatarUrl}>
     </RepositoryItem>
   )}
   />

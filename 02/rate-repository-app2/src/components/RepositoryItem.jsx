@@ -4,10 +4,8 @@ import ThemeText from './ThemeText';
 
 const styles = StyleSheet.create({
     container: {
-      marginTop: Constants.statusBarHeight / 2,
       marginBottom: Constants.statusBarHeight / 2,
       flexGrow: 1,
-      flexShrink: 1,
       backgroundColor: 'white',
       alignItems: 'center',
     },

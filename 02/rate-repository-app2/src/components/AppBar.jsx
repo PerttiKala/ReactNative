@@ -1,40 +1,51 @@
-import { StyleSheet, Pressable, View } from 'react-native';
+import { StyleSheet, Pressable, ScrollView} from 'react-native';
 import Constants from 'expo-constants';
 import ThemeText from './ThemeText';
+import { Link } from "react-router-native";
 
 const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
-    flex: 0,
-    flexDirection: 'column',
-    justifyContent: 'space-around',
+    flex:1,
     alignItems: 'space-evenly',
+    justifyContent: 'space-evenly'
   },
   pressable: {
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#24292e',
-    flex: 0,
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'space-evenly',
+    flexDirection: 'row',
+  },
+  scrollView: {
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: '#24292e',
+    justifyContent: 'flex-start',
+    flexGrow: 1,
+    gap: 25,
   },
 
   text: {
     color: "white",
     fontSize: 20,
   }
-  // ...
 });
 
 const AppBar = ({AppName}) => {
   return (
-  <View style={styles.container}>
-    <Pressable style={styles.pressable}>
-      <ThemeText fontWeight={"bold"} fontSize={"subheading"} color={"textSecondary"}>
-        {AppName} 
-      </ThemeText>
-     </Pressable>
-  </View>
+    <ScrollView horizontal contentContainerStyle={styles.scrollView}>
+      <Pressable style={styles.pressable}>
+        <Link to="/">
+          <ThemeText fontWeight={"bold"} fontSize={"subheading"} color={"textSecondary"}>
+            {AppName} 
+          </ThemeText>
+        </Link>
+      </Pressable>
+      <Pressable style={styles.pressable}>
+        <Link to="/SignIn">
+          <ThemeText color={"textSecondary"} fontSize={"subheading"}>
+            Sign in</ThemeText>
+        </Link>
+      </Pressable>
+    </ScrollView>
   )
 };
 

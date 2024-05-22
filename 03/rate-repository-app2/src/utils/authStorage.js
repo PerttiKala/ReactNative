@@ -8,7 +8,7 @@ class AuthStorage {
   async getAccessToken() {
     const accessToken = await AsyncStorage.getItem(
         `${this.namespace}:accessToken`
-    )
+    );
     return accessToken ? JSON.parse(accessToken) : '';
   }
 
@@ -16,11 +16,11 @@ class AuthStorage {
     await AsyncStorage.setItem(
         `${this.namespace}:accessToken`,
         JSON.stringify(accessToken),
-    )
+    );
   }
 
   async removeAccessToken() {
-    await AsyncStorage.removeItem(`${this.namespace}:accessToken`)
+    await AsyncStorage.removeItem(`${this.namespace}:accessToken`);
   }
 }
 

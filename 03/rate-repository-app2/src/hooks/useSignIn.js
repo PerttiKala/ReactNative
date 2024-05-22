@@ -1,35 +1,47 @@
 import { gql, useMutation } from '@apollo/client';
-
+import { useApolloClient } from '@apollo/client';
+import { useNavigate } from "react-router-dom";
+import useAuthStorage from '../hooks/useAuthStorage';
 
 const MUTATE = gql`
-    mutation Mutation($credentials: AuthenticateInput) {
-        authenticate(credentials: $credentials) {
-        accessToken
-        }
+  mutation Mutation($credentials: AuthenticateInput) {
+    authenticate(credentials: $credentials) {
+      accessToken
     }
+  }
 `;
 
 const useSignIn = () => {
-    const [mutate, { data }] = useMutation(MUTATE);
-  
-    const signIn = async ({ username, password }) => {
-        try {
-            await mutate({
-                variables: {
-                    credentials: {
-                        username,
-                        password
-                    }
-                }
-            });
-        } catch (error) {
-            console.log("Error during authentication:", error)
+  const authStorage = useAuthStorage();
+  const apolloClient = useApolloClient();
+  const navigate = useNavigate();
+
+  const [mutate, { data, loading, error }] = useMutation(MUTATE);
+
+  const signIn = async ({ username, password }) => {
+    try {
+      const response = await mutate({
+        variables: {
+          credentials: {
+            username,
+            password
+          }
         }
-    };
-    
-    console.log(data)
-    return [signIn, data];
+      });
+
+      if (response && response.data) {
+        const token = response.data.authenticate.accessToken;
+        console.log(token);
+        await authStorage.setAccessToken(token);
+        apolloClient.resetStore();
+        navigate("/");
+      }
+    } catch (err) {
+      console.error("Error during authentication:", err);
+    }
   };
 
-export default useSignIn
-  
+  return [signIn, { data, loading, error }];
+};
+
+export default useSignIn;

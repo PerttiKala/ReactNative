@@ -105,7 +105,10 @@ const SignInVals = () => {
 
     try {
       const { data } = await signIn({ username, password});
-      console.log(data);
+      if (data) {
+        console.log("Probleema datan kanssa", data);
+      }
+      
     } catch (e) {
       console.log(e);
     }

@@ -3,6 +3,7 @@ import Constants from 'expo-constants';
 import { StyleSheet, View, TextInput, Pressable, Text } from 'react-native';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import useSignIn from "../hooks/useSignIn";
 
 
 const initialValues = {
@@ -95,9 +96,19 @@ const SignInForm = ({ onSubmit }) => {
 };
 
 const SignInVals = () => {
-  const onSubmit = values => {
-    console.log(values.username);
-    console.log(values.password);
+  const [signIn] = useSignIn();
+
+  const onSubmit = async (values) => {
+    const { username, password } = values;
+    console.log(username);
+    console.log(password);
+
+    try {
+      const { data } = await signIn({ username, password});
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
   };
   return <SignInForm onSubmit={onSubmit}/>;
 };

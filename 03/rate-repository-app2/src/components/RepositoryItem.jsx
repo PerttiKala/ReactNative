@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
 const RepositoryItem = ({name, description, language, stars, forks, reviews, rating, image}) => {
     const url = image
     console.log(url)
-    let starsStr = ''
-    let forksStr = ''
+    let starsStr = stars
+    let forksStr = forks
     if (stars > 1000) {
       let thousands = Math.floor(stars / 1000)
       let hundreds = stars % 1000 - (stars % 100) 
@@ -58,7 +58,7 @@ const RepositoryItem = ({name, description, language, stars, forks, reviews, rat
     }
 
     return (
-      <View style={styles.container}>
+      <View testID='repositoryItem' style={styles.container}>
         <View style={styles.rowContainer}>
         <View>
           <Image

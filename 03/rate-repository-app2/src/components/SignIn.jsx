@@ -58,7 +58,7 @@ const validationSchema = yup.object().shape({
 });
 
 
-const SignInForm = ({ onSubmit }) => {
+const SignInContainer = ({ onSubmit }) => {
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -89,7 +89,7 @@ const SignInForm = ({ onSubmit }) => {
         <Text style={styles.error}>{formik.errors.password}</Text>
       )}
       <Pressable style={styles.button} onPress={formik.handleSubmit}>
-        <ThemeText fontWeight='bold' color='textSecondary'>Sing in</ThemeText>
+        <ThemeText fontWeight='bold' color='textSecondary'>Sign in</ThemeText>
       </Pressable>
     </View>
   );
@@ -113,9 +113,9 @@ const SignInVals = () => {
       console.log(e);
     }
   };
-  return <SignInForm onSubmit={onSubmit}/>;
+  return <SignInContainer onSubmit={onSubmit}/>;
 };
 
 
 
-export default SignInVals;
+export {SignInVals, SignInContainer};

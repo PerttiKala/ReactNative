@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
 
 const RepositoryItem = ({name, description, language, stars, forks, reviews, rating, image}) => {
     const url = image
-    console.log(url)
     let starsStr = stars
     let forksStr = forks
     if (stars > 1000) {

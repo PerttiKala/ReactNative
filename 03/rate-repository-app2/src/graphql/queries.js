@@ -13,11 +13,12 @@ query Repository {
           ratingAverage
           reviewCount
           stargazersCount
+          id
+          url
         }
       }
     }
   }
 `;
-
 
 // other queries...

@@ -1,16 +1,27 @@
 import Constants from 'expo-constants';
-import { Text, StyleSheet, View, Image } from 'react-native';
+import { Text, StyleSheet, View, Image, Pressable } from 'react-native';
 import ThemeText from './ThemeText';
+
+import * as Linking from 'expo-linking';
+import { Link } from 'react-router-native';
 
 
 const styles = StyleSheet.create({
     container: {
-      marginBottom: Constants.statusBarHeight / 2,
+      marginBottom: Constants.statusBarHeight / 3,
       flexGrow: 1,
       backgroundColor: 'white',
       alignItems: 'flex-start',
       flex: 1,
       
+    },
+    containerOutter: {
+      marginBottom: Constants.statusBarHeight / 2,
+      flexGrow: 1,
+      backgroundColor: 'white',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 1,
     },
     rowContainer: {
       flex: 1,
@@ -19,6 +30,9 @@ const styles = StyleSheet.create({
       justifyContent: 'space-between',
       alignContent: 'space-between',
       gap: 10,
+    },
+    rowContainerLink: {
+      marginBottom: Constants.statusBarHeight / 2,
     },
     wrapContainer: {
       marginBottom: Constants.statusBarHeight / 2,
@@ -36,9 +50,21 @@ const styles = StyleSheet.create({
       width: 70,
       height: 70,
     },
+    linkButton: {
+      backgroundColor: '#0366d6',
+      width: 340,
+      height: 50,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   });
 
-const RepositoryItem = ({name, description, language, stars, forks, reviews, rating, image}) => {
+const openGithubPage = ( repoUrl ) => {
+  console.log(repoUrl)
+  Linking.openURL(repoUrl)
+}
+
+const RepositoryItem = ({name, description, language, stars, forks, reviews, rating, image, repoUrl ,showLink = false}) => {
     const url = image
     let starsStr = stars
     let forksStr = forks
@@ -57,41 +83,51 @@ const RepositoryItem = ({name, description, language, stars, forks, reviews, rat
     }
 
     return (
-      <View testID='repositoryItem' style={styles.container}>
-        <View style={styles.rowContainer}>
-        <View>
-          <Image
-                source={{uri: url}}
-                style={styles.tinyLogo}
+      <View style={styles.containerOutter}>
+        <View testID='repositoryItem' style={styles.container}>
+          <View style={styles.rowContainer}>
+          <View>
+            <Image
+                  source={{uri: url}}
+                  style={styles.tinyLogo}
             />
-        </View>
-          <View style={styles.container}>
-            <ThemeText fontWeight='bold'>{name}</ThemeText>
+          </View>
             <View style={styles.container}>
-              <Text style={styles.descText}>{description}</Text>
+              <ThemeText fontWeight='bold'>{name}</ThemeText>
+              <View style={styles.container}>
+                <Text style={styles.descText}>{description}</Text>
+              </View>
+              <ThemeText style={{backgroundColor: '#0366d6', color: 'white'}}>{language}</ThemeText>
             </View>
-            <ThemeText style={{backgroundColor: '#0366d6', color: 'white'}}>{language}</ThemeText>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.container}>
+              <Text style={{fontWeight: '700'}}> {starsStr}</Text>
+              <Text>Stars</Text>
+            </View>
+            <View style={styles.container}>
+              <Text style={{fontWeight: '700'}}>{forksStr}</Text>
+            <Text>Forks</Text>
+            </View>
+            <View style={styles.container}>
+              <Text style={{fontWeight: '700'}}> {reviews}</Text>
+              <Text>Reviews</Text>
+            </View>
+            <View style={styles.container}>
+              <Text style={{fontWeight: '700'}}>{rating}</Text>
+              <Text>Rating</Text>
+            </View>
           </View>
         </View>
-        <View style={styles.rowContainer}>
-          <View style={styles.container}>
-            <Text style={{fontWeight: '700'}}> {starsStr}</Text>
-            <Text>Stars</Text>
-          </View>
-          <View style={styles.container}>
-            <Text style={{fontWeight: '700'}}>{forksStr}</Text>
-          <Text>Forks</Text>
-          </View>
-          <View style={styles.container}>
-            <Text style={{fontWeight: '700'}}> {reviews}</Text>
-            <Text>Reviews</Text>
-          </View>
-          <View style={styles.container}>
-            <Text style={{fontWeight: '700'}}>{rating}</Text>
-            <Text>Rating</Text>
-          </View>
-      </View>
-
+        {showLink ? (
+        <View style={styles.rowContainerLink}>       
+          <Pressable style={styles.linkButton} onPress={() => openGithubPage(repoUrl)}> 
+            <ThemeText style={{ color: 'white', fontSize: 15, fontWeight: 700}}>Open in GitHub</ThemeText>
+          </Pressable>
+        </View>
+          ) : (
+          <></>
+      )}    
       </View>
     );
   };

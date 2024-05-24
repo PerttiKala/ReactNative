@@ -1,7 +1,8 @@
-import { FlatList, View, StyleSheet, Text } from 'react-native';
+import { FlatList, View, StyleSheet, Text, Pressable } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import { useQuery } from '@apollo/client';
 import { GET_REPOSITORIES } from '../graphql/queries';
+import { useNavigate } from "react-router-dom";
 
 const styles = StyleSheet.create({
   separator: {
@@ -12,6 +13,12 @@ const styles = StyleSheet.create({
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryListContainer = ({ repositories }) => {
+  const navigate = useNavigate();
+
+  const toSingleRepo = ( id ) => {
+    navigate(`/repository/${id}`);
+  }
+
   // Get the nodes from the edges array
   const repositoryNodes = repositories
     ? repositories.edges.map(edge => edge.node)
@@ -22,17 +29,20 @@ const RepositoryListContainer = ({ repositories }) => {
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => (
-        <RepositoryItem
-          key={item.id}  // Changed key from item.key to item.id to avoid confusion
-          name={item.fullName}
-          description={item.description}
-          language={item.language}
-          stars={item.stargazersCount}
-          forks={item.forksCount}
-          reviews={item.reviewCount}
-          rating={item.ratingAverage}
-          image={item.ownerAvatarUrl}
-        />
+        <Pressable onPress={() => toSingleRepo(item.id)} >
+          <RepositoryItem
+            key={item.id}  // Changed key from item.key to item.id to avoid confusion
+            name={item.fullName}
+            description={item.description}
+            language={item.language}
+            stars={item.stargazersCount}
+            forks={item.forksCount}
+            reviews={item.reviewCount}
+            rating={item.ratingAverage}
+            image={item.ownerAvatarUrl}
+            repoUrl={item.url}
+          />
+        </Pressable>
       )}
     />
   );

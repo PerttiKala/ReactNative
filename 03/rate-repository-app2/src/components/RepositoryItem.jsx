@@ -1,9 +1,8 @@
 import Constants from 'expo-constants';
 import { Text, StyleSheet, View, Image, Pressable } from 'react-native';
 import ThemeText from './ThemeText';
-
 import * as Linking from 'expo-linking';
-import { Link } from 'react-router-native';
+
 
 
 const styles = StyleSheet.create({

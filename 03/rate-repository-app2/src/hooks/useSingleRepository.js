@@ -13,6 +13,20 @@ const GET_URL = gql`
             stargazersCount
             id
             url
+            reviews {
+                edges {
+                  node {
+                    id
+                    text
+                    rating
+                    createdAt
+                    user {
+                      id
+                      username
+                    }
+                  }
+                }
+              }
         }
     }
 `;

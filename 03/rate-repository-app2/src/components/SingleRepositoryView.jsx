@@ -6,7 +6,7 @@ import useSingleRepository from '../hooks/useSingleRepository';
 import RepositoryItem from './RepositoryItem';
 import Constants from 'expo-constants';
 
-import { parseISO, format } from 'date-fns';
+import { parseISO } from 'date-fns';
 
 const styles = StyleSheet.create({
   separator: {

@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, ScrollView} from 'react-native';
+import { StyleSheet, Pressable, ScrollView, View} from 'react-native';
 import Constants from 'expo-constants';
 import ThemeText from './ThemeText';
 import { Link } from "react-router-native";
@@ -20,8 +20,9 @@ const GET_USER = gql`
 const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
-    alignItems: 'space-evenly',
-    justifyContent: 'space-evenly',
+    paddingHorizontal: 10,
+    backgroundColor: '#24292e',
+    height: 120,
   },
   pressable: {
     paddingTop: Constants.statusBarHeight,
@@ -29,13 +30,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   scrollView: {
-    paddingTop: Constants.statusBarHeight,
-    paddingHorizontal: 10,
-    backgroundColor: '#24292e',
     flexGrow: 1,
     gap: 10,
-    height: 120,
-    flex: 1
   },
   text: {
     color: "white",
@@ -69,27 +65,35 @@ const AppBar = ({AppName}) => {
   if (error || !data?.me) {
     console.log(data)
     return (
-      <ScrollView horizontal contentContainerStyle={styles.scrollView}>
-        <Pressable style={styles.pressable}>
-          <Link to="/">
-            <ThemeText fontWeight={"bold"} fontSize={"subheading"} color={"textSecondary"}>
-              {AppName} 
-            </ThemeText>
-          </Link>
-        </Pressable>
-        <Pressable style={styles.pressable}>
-          <Link to="/CreateReview">
-            <ThemeText color={"textSecondary"} fontSize={"subheading"}>
-              Create a review</ThemeText>
-          </Link>
-        </Pressable>
-        <Pressable style={styles.pressable}>
-          <Link to="/SignIn">
-            <ThemeText color={"textSecondary"} fontSize={"subheading"}>
-              Sign in</ThemeText>
-          </Link>
-        </Pressable>
-      </ScrollView>
+      <View style={styles.container}>
+        <ScrollView horizontal={true} contentContainerStyle={styles.scrollView}>
+          <Pressable style={styles.pressable}>
+            <Link to="/">
+              <ThemeText fontWeight={"bold"} fontSize={"subheading"} color={"textSecondary"}>
+                {AppName} 
+              </ThemeText>
+            </Link>
+          </Pressable>
+          <Pressable style={styles.pressable}>
+            <Link to="/CreateReview">
+              <ThemeText color={"textSecondary"} fontSize={"subheading"}>
+                Create a review</ThemeText>
+            </Link>
+          </Pressable>
+          <Pressable style={styles.pressable}>
+            <Link to="/SignIn">
+              <ThemeText color={"textSecondary"} fontSize={"subheading"}>
+                Sign in</ThemeText>
+            </Link>
+          </Pressable>
+          <Pressable style={styles.pressable}>
+            <Link to="/SignUp">
+              <ThemeText color={"textSecondary"} fontSize={"subheading"}>
+                Sign up</ThemeText>
+            </Link>
+          </Pressable>
+        </ScrollView>
+      </View>
     )
   }
 

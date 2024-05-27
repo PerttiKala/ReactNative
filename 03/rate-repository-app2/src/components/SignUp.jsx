@@ -3,6 +3,8 @@ import Constants from 'expo-constants';
 import { StyleSheet, View, TextInput, Pressable, Text } from 'react-native';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useMutation } from '@apollo/client';
+import { CREATE_USER } from "../graphql/mutations";
 import useSignIn from "../hooks/useSignIn";
 
 
@@ -60,7 +62,7 @@ const validationSchema = yup.object().shape({
     .max(30, 'Password can\'t have over 30 characters'),
   passwordSecond: yup
     .string()
-    .oneOf([yup.ref('password'), null], 'Passwords don\'t match')
+    .oneOf([yup.ref('passwordFirst'), null], 'Passwords don\'t match')
     .required('Password confirmation is required')
     .min(5, "Password must be over 5 characters long")
     .max(30, 'Password can\'t have over 30 characters'),
@@ -116,24 +118,38 @@ const SignUpContainer = ({ onSubmit }) => {
 };
 
 const SignUpVals = () => {
-  const [signIn] = useSignIn();
+  const [signIn] = useSignIn(); // Assume you have a custom hook useSignIn
+  const [mutate] = useMutation(CREATE_USER);
 
   const onSubmit = async (values) => {
-    const { username, password } = values;
+    const { username, passwordFirst } = values;
     console.log(username);
-    console.log(password);
+    console.log(passwordFirst);
 
+    // Create user and sign in
     try {
-      const { data } = await signIn({ username, password});
-      if (data) {
-        console.log("Probleema datan kanssa", data);
+      const response = await mutate({
+        variables: {
+          username,
+          password: passwordFirst
+        }
+      });
+
+      console.log('Created new user:', response);
+
+      // Try signing in the user
+      try {
+        await signIn({ username, password: passwordFirst });
+      } catch (signInError) {
+        console.error('Error during sign-in:', signInError);
       }
-      
-    } catch (e) {
-      console.log(e);
+
+    } catch (mutationError) {
+      console.error('Error during registration:', mutationError);
     }
   };
-  return <SignUpContainer onSubmit={onSubmit}/>;
+
+  return <SignUpContainer onSubmit={onSubmit} />;
 };
 
 

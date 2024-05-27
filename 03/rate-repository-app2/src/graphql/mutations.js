@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const ADD_REVIEW = gql`
+const ADD_REVIEW = gql`
     mutation CreateReview($repoOwnerName: String!, $repoName: String!, $rating: Int!, $review: String) {
       createReview(review: {
         repositoryName: $repoName,
@@ -15,3 +15,19 @@ export const ADD_REVIEW = gql`
       }
     }
   `;
+
+
+const CREATE_USER = gql`
+mutation Mutation($username: String!, $password: String!) {
+    createUser(user: {
+      username: $username,
+      password: $password,
+    }) {
+      id
+    }
+  }
+    `;
+    
+
+
+export {ADD_REVIEW, CREATE_USER}

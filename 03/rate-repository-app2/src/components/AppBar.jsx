@@ -98,27 +98,29 @@ const AppBar = ({AppName}) => {
   }
 
   return (
-    <ScrollView horizontal contentContainerStyle={styles.scrollView}>
-      <Pressable style={styles.pressable}>
-        <Link to="/">
-          <ThemeText fontWeight={"bold"} fontSize={"subheading"} color={"textSecondary"}>
-            {AppName} 
-          </ThemeText>
-        </Link>
-      </Pressable>
-      <Pressable style={styles.pressable}>
-          <Link to="/CreateReview">
-            <ThemeText color={"textSecondary"} fontSize={"subheading"}>
-              Create a review</ThemeText>
+    <View style={styles.container}>
+      <ScrollView horizontal contentContainerStyle={styles.scrollView}>
+        <Pressable style={styles.pressable}>
+          <Link to="/">
+            <ThemeText fontWeight={"bold"} fontSize={"subheading"} color={"textSecondary"}>
+              {AppName} 
+            </ThemeText>
           </Link>
         </Pressable>
-      <Pressable style={styles.pressable}>
-        <Link onPress={logOut} to="/SignIn">
-          <ThemeText color={"textSecondary"} fontSize={"subheading"}>
-            Sign Out</ThemeText>
-        </Link>
-      </Pressable>
-    </ScrollView>
+        <Pressable style={styles.pressable}>
+            <Link to="/CreateReview">
+              <ThemeText color={"textSecondary"} fontSize={"subheading"}>
+                Create a review</ThemeText>
+            </Link>
+          </Pressable>
+        <Pressable style={styles.pressable}>
+          <Link onPress={logOut} to="/SignIn">
+            <ThemeText color={"textSecondary"} fontSize={"subheading"}>
+              Sign Out</ThemeText>
+          </Link>
+        </Pressable>
+      </ScrollView>
+    </View>
   )
 };
 

@@ -8,7 +8,8 @@ import useSignIn from "../hooks/useSignIn";
 
 const initialValues = {
   username: '',
-  password: '',
+  passwordFirst: '',
+  passwordSecond: '',
 };
 
 const styles = StyleSheet.create({
@@ -52,9 +53,17 @@ const validationSchema = yup.object().shape({
   username: yup
     .string()
     .required('Username is required'),
-  password: yup
+  passwordFirst: yup
     .string()
-    .required('Password is required'),
+    .required('Password is required')
+    .min(5, "Password must be over 5 characters long")
+    .max(30, 'Password can\'t have over 30 characters'),
+  passwordSecond: yup
+    .string()
+    .oneOf([yup.ref('password'), null], 'Passwords don\'t match')
+    .required('Password confirmation is required')
+    .min(5, "Password must be over 5 characters long")
+    .max(30, 'Password can\'t have over 30 characters'),
 });
 
 
@@ -78,18 +87,29 @@ const SignUpContainer = ({ onSubmit }) => {
         <Text style={styles.error}>{formik.errors.username}</Text>
       )}
       <TextInput
-        style={[formik.touched.password && formik.errors.password ?
+        style={[formik.touched.passwordFirst && formik.errors.passwordFirst ?
         styles.inputInvalid : styles.inputValid]}
         secureTextEntry={true}
         placeholder="Password"
-        value={formik.values.password}
-        onChangeText={formik.handleChange('password')}
+        value={formik.values.passwordFirst}
+        onChangeText={formik.handleChange('passwordFirst')}
       />
-      {formik.touched.password && formik.errors.password && (
-        <Text style={styles.error}>{formik.errors.password}</Text>
+      {formik.touched.passwordFirst && formik.errors.passwordFirst && (
+        <Text style={styles.error}>{formik.errors.passwordFirst}</Text>
+      )}
+      <TextInput
+        style={[formik.touched.passwordSecond && formik.errors.passwordSecond ?
+        styles.inputInvalid : styles.inputValid]}
+        secureTextEntry={true}
+        placeholder="Password confirmation"
+        value={formik.values.passwordSecond}
+        onChangeText={formik.handleChange('passwordSecond')}
+      />
+      {formik.touched.passwordSecond && formik.errors.passwordSecond && (
+        <Text style={styles.error}>{formik.errors.passwordSecond}</Text>
       )}
       <Pressable style={styles.button} onPress={formik.handleSubmit}>
-        <ThemeText fontWeight='bold' color='textSecondary'>Sign in</ThemeText>
+        <ThemeText fontWeight='bold' color='textSecondary'>Sign up</ThemeText>
       </Pressable>
     </View>
   );

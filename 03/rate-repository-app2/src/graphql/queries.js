@@ -75,6 +75,7 @@ const USER_REVIEWS = gql`
             rating
             repository {
               fullName
+              url
             }
             text
             user {

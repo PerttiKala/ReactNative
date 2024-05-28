@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
       height: 70,
     },
     linkButton: {
+      borderRadius: 4,
       backgroundColor: '#0366d6',
       width: 340,
       height: 50,

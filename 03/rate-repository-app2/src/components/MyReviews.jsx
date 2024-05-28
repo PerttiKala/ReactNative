@@ -1,16 +1,18 @@
 import React from 'react';
-import { Text, View, StyleSheet, FlatList } from 'react-native';
+import { Text, View, StyleSheet, FlatList, Pressable } from 'react-native';
 import Constants from 'expo-constants';
 import { parseISO } from 'date-fns';
 import { USER_REVIEWS } from '../graphql/queries';
 import { useQuery } from '@apollo/client';
+import * as Linking from 'expo-linking';
+
 
 const styles = StyleSheet.create({
   separator: {
     height: 10,
   },
   container: {
-    marginBottom: Constants.statusBarHeight / 3,
+    marginBottom: Constants.statusBarHeight/2,
     flexGrow: 1,
     backgroundColor: 'white',
     justifyContent: 'center',
@@ -30,8 +32,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignContent: 'space-between',
+    justifyContent: 'space-evenly',
+    alignContent: 'space-evenly',
+    gap: 20,
+  },
+  rowContainerLinks: {
+    marginBottom: Constants.statusBarHeight / 2,
+    marginHorizontal: 15,
+    flex: 1,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignContent: 'space-evenly',
     gap: 20,
   },
   circle: {
@@ -49,8 +61,29 @@ const styles = StyleSheet.create({
     fontSize: 18, // Adjust the size as needed
     fontWeight: 'bold', // Make the text bold
   },
+  linkButtonBlue: {
+    borderRadius: 4,
+    backgroundColor: '#0366d6',
+    width: 150,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  linkButtonRed: {
+    backgroundColor: '#D60B30',
+    width: 150,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 4,
+  },
 });
 
+
+const openGithubPage = ( repoUrl ) => {
+    console.log(repoUrl)
+    Linking.openURL(repoUrl)
+  }
 
 
 function formatDate(isoDate) {
@@ -77,16 +110,23 @@ const ReviewItem = ({ review }) => {
       </View>
         <View style={styles.container}>
           <View style={styles.container}>
-            <Text style={{fontWeight: 700, fontSize: 16}}>{review.user.username}</Text>
+            <Text style={{fontWeight: 700, fontSize: 16}}>{review.repository.fullName}</Text>
             <Text style={{color: 'grey', fontSize: 15}} >{formattedDate}</Text>
           </View>
           <Text style={{fontSize: 15}}>Review: {review.text}</Text>
         </View>
     </View>
+    <View style={styles.rowContainerLinks}>       
+          <Pressable style={styles.linkButtonBlue} onPress={() => openGithubPage(review.repository.url)}> 
+            <Text style={{ color: 'white', fontSize: 15, fontWeight: 700}}>View repository</Text>
+          </Pressable>
+          <Pressable style={styles.linkButtonRed} onPress={() => console.log("Delete not implemented yet")}> 
+            <Text style={{ color: 'white', fontSize: 15, fontWeight: 700}}>Delete review</Text>
+          </Pressable>
+    </View>
   </View>
   )
 }
-
 
 const MyReviews = () => {
 

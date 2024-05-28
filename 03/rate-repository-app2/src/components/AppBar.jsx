@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flexGrow: 1,
-    gap: 10,
+    gap: 16,
   },
   text: {
     color: "white",
@@ -76,19 +76,19 @@ const AppBar = ({AppName}) => {
           </Pressable>
           <Pressable style={styles.pressable}>
             <Link to="/CreateReview">
-              <ThemeText color={"textSecondary"} fontSize={"subheading"}>
+              <ThemeText fontWeight={"bold"} color={"textSecondary"} fontSize={"subheading"}>
                 Create a review</ThemeText>
             </Link>
           </Pressable>
           <Pressable style={styles.pressable}>
             <Link to="/SignIn">
-              <ThemeText color={"textSecondary"} fontSize={"subheading"}>
+              <ThemeText fontWeight={"bold"} color={"textSecondary"} fontSize={"subheading"}>
                 Sign in</ThemeText>
             </Link>
           </Pressable>
           <Pressable style={styles.pressable}>
             <Link to="/SignUp">
-              <ThemeText color={"textSecondary"} fontSize={"subheading"}>
+              <ThemeText fontWeight={"bold"} color={"textSecondary"} fontSize={"subheading"}>
                 Sign up</ThemeText>
             </Link>
           </Pressable>

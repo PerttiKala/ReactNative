@@ -76,7 +76,7 @@ const RepositoryItem = ({name, description, language, stars, forks, reviews, rat
     }
     if (forks > 1000) {
       let thousands = Math.floor(forks / 1000)
-      let hundreds = stars % 1000 - (forks % 100) 
+      let hundreds = forks % 1000 - (forks % 100) 
       hundreds = Math.floor(hundreds / 100)
       forksStr = thousands + "." + hundreds + "k"
     }

@@ -64,8 +64,31 @@ const GET_REPOSITORIES_FILTER = gql`
   }
 `;
 
+const USER_REVIEWS = gql`
+  query GetReviews {
+    me {
+      reviews {
+        edges {
+          node {
+            createdAt
+            id
+            rating
+            repository {
+              fullName
+            }
+            text
+            user {
+              username
+            }
+          }
+        }
+      }
+    }
+  }
+  `;
 
-export {GET_REPOSITORIES, GET_REPOSITORIES_ORDER, GET_REPOSITORIES_FILTER}
+
+export {GET_REPOSITORIES, GET_REPOSITORIES_ORDER, GET_REPOSITORIES_FILTER, USER_REVIEWS}
 
 
 // other queries...

@@ -113,6 +113,12 @@ const AppBar = ({AppName}) => {
                 Create a review</ThemeText>
             </Link>
           </Pressable>
+          <Pressable style={styles.pressable}>
+            <Link to="/MyReviews">
+              <ThemeText color={"textSecondary"} fontSize={"subheading"}>
+                My reviews</ThemeText>
+            </Link>
+          </Pressable>
         <Pressable style={styles.pressable}>
           <Link onPress={logOut} to="/SignIn">
             <ThemeText color={"textSecondary"} fontSize={"subheading"}>

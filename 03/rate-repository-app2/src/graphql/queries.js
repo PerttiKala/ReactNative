@@ -42,7 +42,30 @@ const GET_REPOSITORIES_ORDER = gql`
   }
 `;
 
-export {GET_REPOSITORIES, GET_REPOSITORIES_ORDER}
+const GET_REPOSITORIES_FILTER = gql`
+  query Query($searchKeyword: String, $orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirection){
+    repositories(orderBy: $orderBy, orderDirection: $orderDirection, searchKeyword: $searchKeyword) {
+      edges {
+        node {
+          id
+          description
+          forksCount
+          fullName
+          language
+          name
+          ownerAvatarUrl
+          ownerName
+          ratingAverage
+          reviewCount
+          stargazersCount
+        }
+      }
+    }
+  }
+`;
+
+
+export {GET_REPOSITORIES, GET_REPOSITORIES_ORDER, GET_REPOSITORIES_FILTER}
 
 
 // other queries...

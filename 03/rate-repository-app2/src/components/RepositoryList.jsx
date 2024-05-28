@@ -1,10 +1,12 @@
 import { FlatList, View, StyleSheet, Text, Pressable, ActivityIndicator } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import { useQuery } from '@apollo/client';
-import { GET_REPOSITORIES, GET_REPOSITORIES_ORDER } from '../graphql/queries';
+import { GET_REPOSITORIES, GET_REPOSITORIES_FILTER } from '../graphql/queries';
 import { useNavigate } from "react-router-dom";
 import {Picker} from '@react-native-picker/picker';
 import { useState } from 'react';
+import { Searchbar } from 'react-native-paper';
+import { useDebounce } from 'use-debounce';
 
 const styles = StyleSheet.create({
   separator: {
@@ -23,6 +25,8 @@ const ItemSeparator = () => <View style={styles.separator} />;
 const RepositoryListContainer = () => {
   const navigate = useNavigate();
   const [selectedOrder, setSelectedOrder] = useState('latest');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchKeyword] = useDebounce(searchQuery, 500)
   
   let orderBy = ''
   let orderDirection = ''
@@ -46,8 +50,8 @@ const RepositoryListContainer = () => {
     orderDirection = 'ASC'
   }
 
-  const { loading, error, data } = useQuery(GET_REPOSITORIES_ORDER, {
-    variables: { orderBy, orderDirection },
+  const { loading, error, data } = useQuery(GET_REPOSITORIES_FILTER, {
+    variables: { orderBy, orderDirection, searchKeyword },
   });
 
   if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
@@ -58,37 +62,46 @@ const RepositoryListContainer = () => {
     ? data.repositories.edges.map(edge => edge.node)
     : [];
 
+
   return (
       <FlatList
-            ListHeaderComponent={
-            <Picker
-              prompt='Select an item...'
-              selectedValue={selectedOrder}
-              onValueChange={(itemValue) =>
-                setSelectedOrder(itemValue)
-              }>
-              <Picker.Item label="Latest repositories" value="latest" />
-              <Picker.Item label="Highest rated repositories" value="topRating" />
-              <Picker.Item label="Lowest rated repositories" value="lowestRating" />
-            </Picker>}
-            data={repositoryNodes}
-            ItemSeparatorComponent={ItemSeparator}
-            renderItem={({ item }) => (
-            <Pressable onPress={() => toSingleRepo(item.id)} >
-              <RepositoryItem
-                key={item.id}  // Changed key from item.key to item.id to avoid confusion
-                name={item.fullName}
-                description={item.description}
-                language={item.language}
-                stars={item.stargazersCount}
-                forks={item.forksCount}
-                reviews={item.reviewCount}
-                rating={item.ratingAverage}
-                image={item.ownerAvatarUrl}
-                repoUrl={item.url}
+        ListHeaderComponent={
+        <View>
+          <Searchbar
+            placeholder="Search"
+            onChangeText={setSearchQuery}
+            value={searchQuery}
+            mode='bar'
+          />
+          <Picker
+            prompt='Select an item...'
+            selectedValue={selectedOrder}
+            onValueChange={(itemValue) =>
+              setSelectedOrder(itemValue)
+            }>
+            <Picker.Item label="Latest repositories" value="latest" />
+            <Picker.Item label="Highest rated repositories" value="topRating" />
+            <Picker.Item label="Lowest rated repositories" value="lowestRating" />
+          </Picker>
+        </View>}
+        data={repositoryNodes}
+        ItemSeparatorComponent={ItemSeparator}
+        renderItem={({ item }) => (
+          <Pressable onPress={() => toSingleRepo(item.id)} >
+            <RepositoryItem
+              key={item.id}  // Changed key from item.key to item.id to avoid confusion
+              name={item.fullName}
+              description={item.description}
+              language={item.language}
+              stars={item.stargazersCount}
+              forks={item.forksCount}
+              reviews={item.reviewCount}
+              rating={item.ratingAverage}
+              image={item.ownerAvatarUrl}
+              repoUrl={item.url}
               />
           </Pressable>
-        )}
+          )}
       />
   );
 };
